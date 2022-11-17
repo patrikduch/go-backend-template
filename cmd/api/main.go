@@ -14,7 +14,6 @@ type application struct {
 
 func main() {
 	var app application
-	app.Domain = "example.com"
 
 	log.Println("Starting application on port", port)
 

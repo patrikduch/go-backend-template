@@ -8,9 +8,7 @@ import (
 
 const port = 8080
 
-type application struct {
-	Domain string
-}
+type application struct{}
 
 func main() {
 	var app application

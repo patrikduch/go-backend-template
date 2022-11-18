@@ -1,8 +1,9 @@
 package main
 
 import (
-	"database/sql"
 	"fmt"
+	"go-backend-template/internals/repositories"
+	"go-backend-template/internals/repositories/dbrepo"
 	"log"
 	"net/http"
 )
@@ -11,7 +12,7 @@ const port = 8080
 
 type application struct {
 	DSN string
-	DB  *sql.DB
+	DB  repositories.DatabaseRepo
 }
 
 func main() {
@@ -26,9 +27,9 @@ func main() {
 		log.Fatal(err)
 	}
 
-	app.DB = conn
+	app.DB = &dbrepo.PostgresDbRepo{DB: conn}
 
-	defer app.DB.Close()
+	defer app.DB.Connection().Close()
 
 	log.Println("Starting application on port", port)
 

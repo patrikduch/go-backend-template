@@ -8,7 +8,7 @@ import (
 	"log"
 )
 
-// sql.Db pointer to the pool of SQL connection
+// sql.Db pointer to the pool of SQL connections
 func openDB(dsn string) (*sql.DB, error) {
 
 	db, err := sql.Open("pgx", dsn)

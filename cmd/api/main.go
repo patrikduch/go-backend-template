@@ -28,6 +28,8 @@ func main() {
 
 	app.DB = conn
 
+	defer app.DB.Close()
+
 	log.Println("Starting application on port", port)
 
 	// start a webserver

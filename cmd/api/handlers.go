@@ -72,7 +72,7 @@ func (app *application) GetBTCPrice(w http.ResponseWriter, r *http.Request) {
 	// ------------------------------------------------------------------------------------
 
 	// ------------- # 3 -------------------------------------------------------------------
-	var res dtos.BtcItemDto
+	var res dtos.BtcSummaryDto
 
 	// BPIS
 	var bpis []requests.Currency
@@ -86,7 +86,9 @@ func (app *application) GetBTCPrice(w http.ResponseWriter, r *http.Request) {
 	res.ChartName = currentPriceResponse.ChartName
 	res.Disclaimer = currentPriceResponse.Disclaimer
 	res.Time = currentPriceResponse.Time
-	res.Bpi = bpis
+	res.Bpi = dtos.Bpi{
+		Currencies: bpis,
+	}
 
 	// final result
 	out, err := json.Marshal(res)

@@ -21,9 +21,22 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
+-- Name: fiat_currency; Type: TABLE; Schema: public; Owner: -
+--
+CREATE TABLE public.fiat_currency
+(
+    id            SERIAL      NOT NULL PRIMARY KEY,
+    currency_name VARCHAR(30) NOT NULL
+);
+
+
+INSERT INTO public.fiat_currency VALUES (1, 'USD');
+INSERT INTO public.fiat_currency VALUES (2, 'EUR');
+
+
+--
 -- Name: genres; Type: TABLE; Schema: public; Owner: -
 --
-
 CREATE TABLE public.genres (
     id integer NOT NULL,
     genre character varying(255),

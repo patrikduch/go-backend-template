@@ -17,6 +17,42 @@ func (m *PostgresDbRepo) Connection() *sql.DB {
 	return m.DB
 }
 
+func (m *PostgresDbRepo) GetFiatCurrencies() (map[string]*models.FiatCurrency, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
+	defer cancel()
+
+	query := `
+   		select fc.id, fc.currency_name  from fiat_currency fc
+	`
+	rows, err := m.DB.QueryContext(ctx, query)
+
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	//var fiatCurrencies []*models.FiatCurrency
+
+	mapTest := make(map[string]*models.FiatCurrency)
+
+	for rows.Next() {
+		var fiatCurrency models.FiatCurrency
+		err := rows.Scan(
+			&fiatCurrency.Id,
+			&fiatCurrency.Name)
+
+		if err != nil {
+			return nil, err
+		}
+
+		mapTest[fiatCurrency.Name] = &fiatCurrency
+
+		//fiatCurrencies = append(fiatCurrencies, &fiatCurrency)
+	}
+
+	return mapTest, nil
+}
+
 func (m *PostgresDbRepo) AllMovies() ([]*models.Movie, error) {
 
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)

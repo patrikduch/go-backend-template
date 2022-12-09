@@ -14,6 +14,7 @@ func (app *application) routes() http.Handler {
 	mux.Use(app.enableCORS)
 
 	mux.Get("/movies", app.AllMovies)
+	mux.Get("/btc", app.GetBTCPrice)
 
 	return mux
 }

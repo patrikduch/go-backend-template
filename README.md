@@ -12,6 +12,13 @@ go get github.com/jackc/pgx/v4
 go get github.com/jackc/pgconn (just to be safe)
 
 
+### sqlboiler
+
+```bash
+https://github.com/volatiletech/sqlboiler
+```
+
+
 ## development
 
 ### start auxiliary services via docker-compose
@@ -24,3 +31,8 @@ docker-compose up -d
 ```
 
 
+### generate database access
+
+```bash
+sqlboiler psql
+```

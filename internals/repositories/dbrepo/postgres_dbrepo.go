@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"go-backend-template/internals/models"
+	"log"
 	"time"
 )
 
@@ -21,80 +22,37 @@ func (m *PostgresDbRepo) GetFiatCurrencies() (map[string]*models.FiatCurrency, e
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := `
-   		select fc.id, fc.currency_name  from fiat_currency fc
-	`
-	rows, err := m.DB.QueryContext(ctx, query)
+	fiatCurrencyExecutor := models.FiatCurrencies()
+	fiatCurrencies, err := fiatCurrencyExecutor.All(ctx, m.DB)
 
 	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
+		log.Fatal(err)
+	} // handle err
 
-	//var fiatCurrencies []*models.FiatCurrency
-
-	mapTest := make(map[string]*models.FiatCurrency)
-
-	for rows.Next() {
-		var fiatCurrency models.FiatCurrency
-		err := rows.Scan(
-			&fiatCurrency.Id,
-			&fiatCurrency.Name)
-
-		if err != nil {
-			return nil, err
-		}
-
-		mapTest[fiatCurrency.Name] = &fiatCurrency
-
-		//fiatCurrencies = append(fiatCurrencies, &fiatCurrency)
+	if fiatCurrencies != nil {
+		log.Println("aa")
 	}
 
-	return mapTest, nil
+	mapResult := make(map[string]*models.FiatCurrency)
+
+	for _, item := range fiatCurrencies {
+		mapResult[item.CurrencyName] = item
+	}
+
+	return mapResult, nil
 }
 
-func (m *PostgresDbRepo) AllMovies() ([]*models.Movie, error) {
+func (m *PostgresDbRepo) AllMovies() (models.MovieSlice, error) {
 
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := `select
-				id, title, release_date, runtime,
-				mpaa_rating, description,  coalesce(image,''),
-				created_at, updated_at
-              from 
-                  movies
-			  order by 
-			      title
-	`
-	rows, err := m.DB.QueryContext(ctx, query)
+	movieExecutor := models.Movies()
+	movies, err := movieExecutor.All(ctx, m.DB)
 
 	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-
-	var movies []*models.Movie
-
-	for rows.Next() {
-		var movie models.Movie
-		err := rows.Scan(
-			&movie.ID,
-			&movie.Title,
-			&movie.ReleaseDate,
-			&movie.Runtime,
-			&movie.MPAARating,
-			&movie.Description,
-			&movie.Image,
-			&movie.CreatedAt,
-			&movie.UpdatedAt)
-
-		if err != nil {
-			return nil, err
-		}
-
-		movies = append(movies, &movie)
-	}
+		log.Fatal(err)
+	} // handle err
 
 	return movies, nil
 }

@@ -1,0 +1,11 @@
+output   = "internals/models"
+wipe     = true
+no-tests = true
+add-enum-types = true
+
+[psql]
+dbname = "movies"
+user = "postgres"
+pass = "postgres"
+host = "localhost"
+sslmode = "disable"

@@ -7,6 +7,6 @@ import (
 
 type DatabaseRepo interface {
 	Connection() *sql.DB
-	AllMovies() ([]*models.Movie, error)
+	AllMovies() (models.MovieSlice, error)
 	GetFiatCurrencies() (map[string]*models.FiatCurrency, error)
 }
